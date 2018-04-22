@@ -48,16 +48,21 @@ def register():
     form = RegisterForm(request.form) 
     if request.method == "POST" and form.validate():
 
-        name = form.name.data
-        username = form.username.data
-        email = form.email.data
-        password = sha256_crypt.encrypt(form.password.data)     
+        name = request.form.get("name")
+        username = request.form.get("username")
+        email = request.form.get("email")
+        password = sha256_crypt.encrypt(request.form.get("password"))   
 
+        ekle = Todo(name = name,username=username,email=email,password=password)  
 
+        db.session.add(ekle)
+        db.session.commit()
         return redirect (url_for("index"))
     else:    
         return render_template("register.html", form = form)
 
+
+# Tablodaki yerlerimizi belirliyoruz. 
 class Todo(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String(80))
