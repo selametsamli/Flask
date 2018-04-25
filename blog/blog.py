@@ -6,6 +6,8 @@ from passlib.hash import sha256_crypt
 
 
 app = Flask(__name__)
+
+app.secret_key= "ybblog"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/selametsamli/Programlama/VSCode/FLASK/blog/blog/todo.db'
 
@@ -57,6 +59,9 @@ def register():
 
         db.session.add(ekle)
         db.session.commit()
+        flash("Başarıyla kayıt oldunuz..","success")
+
+
         return redirect (url_for("index"))
     else:    
         return render_template("register.html", form = form)
