@@ -27,6 +27,15 @@ class RegisterForm(Form):
     ])
     confirm = PasswordField("Parola Dogrula")
 
+#Giriş Formu
+
+class LoginForm(Form):
+
+    username = StringField("Kullanıcı Adı:")
+    password = PasswordField("Parola")
+
+
+
 @app.route("/")
 def index():
     article = [
@@ -62,9 +71,19 @@ def register():
         flash("Başarıyla kayıt oldunuz..","success")
 
 
-        return redirect (url_for("index"))
+        return redirect (url_for("login"))
     else:    
         return render_template("register.html", form = form)
+
+
+
+ #Login İşlemi
+
+@app.route("/login", methods = ["GET","POST"])
+def login():
+    form = LoginForm(request.form)
+
+    return render_template("login.html",form = form)       
 
 
 # Tablodaki yerlerimizi belirliyoruz. 
