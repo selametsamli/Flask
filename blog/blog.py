@@ -2,6 +2,7 @@ from flask import Flask,render_template,flash,redirect,url_for,session,logging,r
 from flask_sqlalchemy import SQLAlchemy
 from wtforms import Form,StringField,TextAreaField,PasswordField,validators
 from passlib.hash import sha256_crypt
+from functools import wraps
 
 
 
@@ -12,6 +13,19 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/selametsamli/Programlama/VSCode/FLASK/blog/blog/todo.db'
 
 db = SQLAlchemy(app)
+
+
+#Kullanıcı giriş Decorator'ı
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "logged_in" in session:
+            return f(*args, **kwargs)
+        else:
+            flash("Bu sayfayı görüntülemek için lütfen giriş yapın.","danger")
+            return redirect(url_for("login"))
+    return decorated_function
 
 
 # Kullanici Kayit Formu
@@ -45,12 +59,10 @@ def index():
 def about():
     return render_template("about.html")
 
-@app.route("/article/<string:id>")
-def detail(id):
-    return "Article Id: "+id
 
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
     return render_template("dashboard.html")
 
