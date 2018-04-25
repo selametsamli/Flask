@@ -50,6 +50,11 @@ def detail(id):
     return "Article Id: "+id
 
 
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
+
+
 #Kayit Olma
 @app.route("/register", methods = ["GET","POST"])
 def register():
