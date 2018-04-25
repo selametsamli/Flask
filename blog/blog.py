@@ -30,11 +30,8 @@ class RegisterForm(Form):
 #Giriş Formu
 
 class LoginForm(Form):
-
     username = StringField("Kullanıcı Adı:")
     password = PasswordField("Parola")
-
-
 
 @app.route("/")
 def index():
@@ -62,7 +59,7 @@ def register():
         name = request.form.get("name")
         username = request.form.get("username")
         email = request.form.get("email")
-        password = sha256_crypt.encrypt(request.form.get("password"))   
+        password = request.form.get("password")
 
         ekle = Todo(name = name,username=username,email=email,password=password)  
 
@@ -81,11 +78,37 @@ def register():
 
 @app.route("/login", methods = ["GET","POST"])
 def login():
+    session['logged_in'] = False
     form = LoginForm(request.form)
 
-    return render_template("login.html",form = form)       
+    if request.method == "POST":
+        name = form.username.data
+        passw = form.password.data
+        try:
+            data =Todo.query.filter_by(username=name, password=passw).first()
+            if data is not None:
+               
+                flash("Basarili","success")
+                session['logged_in'] = True
+                session["username"] = name
+                return redirect (url_for("index"))
+            else:
+                flash("Böyle bir kullanıcı bulunmuyor ...","danger")
+                return redirect(url_for("login"))
+        except:
+            flash("Böyle bir kullanıcı bulunmuyor ...","danger")
+            return redirect(url_for("login"))
+    else:
+        return render_template("login.html",form = form)
 
 
+# Logout İşlemi
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
+
+        
 # Tablodaki yerlerimizi belirliyoruz. 
 class Todo(db.Model):
     id = db.Column(db.Integer,primary_key=True)
