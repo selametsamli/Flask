@@ -64,7 +64,11 @@ def about():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+
+    articles=Makale.query.order_by(Makale.author).all()
+
+
+    return render_template("dashboard.html",articles=articles)
 
 
 #Kayit Olma
