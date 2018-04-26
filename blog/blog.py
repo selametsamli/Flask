@@ -125,6 +125,20 @@ def logout():
     session.clear()
     return redirect(url_for("index"))
 
+#Makale Sayfası
+@app.route("/articles")
+def articles():
+    author = Makale.query.order_by(Makale.author).all()
+    title = Makale.query.order_by(Makale.title).all()
+    content = Makale.query.order_by(Makale.content).all()
+
+
+    #articles = {"author":Makale.query.order_by(Makale.author).all(),"title" : Makale.query.order_by(Makale.title).all(),
+     #"content":Makale.query.order_by(Makale.content).all()}
+
+    return render_template("articles.html",title=title,author=author,content=content)
+   
+
 
 
 #Makale Ekleme
