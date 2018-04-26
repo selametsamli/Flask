@@ -132,16 +132,27 @@ def logout():
 @app.route("/addarticle",methods=["GET","POST"])
 def addarticle():
     form = ArticleForm(request.form)
+    
+    if request.method == "POST" and form.validate():
+        
+        title = form.title.data
+        content = form.content.data
+        author = session["username"] 
+        ekle = Makale(title = title,content=content,author=author)  
 
+        db.session.add(ekle)
+        db.session.commit()
+
+        flash("Makale Başarıyla Eklendi..","success")
+        return redirect(url_for("dashboard"))
 
     return render_template("addarticle.html",form = form)
 
 
 
 #Makale Form 
-
 class ArticleForm(Form):
-    title = StringField("Makale Başlığı",validators=[validators.Length(min =5 , max = 5)])
+    title = StringField("Makale Başlığı",validators=[validators.Length(min =5 , max = 50)])
     content = TextAreaField("Makale İçeriği",validators=[validators.Length(min = 10)])
 
         
