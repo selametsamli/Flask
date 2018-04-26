@@ -129,6 +129,19 @@ def logout():
     session.clear()
     return redirect(url_for("index"))
 
+
+#Detay Sayfası
+
+@app.route("/article/<string:id>")
+def article(id):
+    
+    article=Makale.query.get(id)
+    
+    
+    return render_template("article.html",article=article)
+
+
+
 #Makale Sayfası
 @app.route("/articles")
 def articles():

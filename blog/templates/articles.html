@@ -8,7 +8,7 @@
 
 <ul class="list-group">
     {% for article in title  %}
-    <li class = "list-group-item">{{article.title}}</li>
+    <li class = "list-group-item"><a href="article/{{article.id}}">{{article.title}}</a></li>
     {% endfor %}
 </ul>
 
@@ -17,8 +17,6 @@
 <div class ="alert alert-danger">Bu blokta henüz makale bulunmuyor</div>
 
 {% endif %}
-
-
 
 
 {% endblock body %}
