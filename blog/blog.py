@@ -126,6 +126,24 @@ def logout():
     session.clear()
     return redirect(url_for("index"))
 
+
+
+#Makale Ekleme
+@app.route("/addarticle",methods=["GET","POST"])
+def addarticle():
+    form = ArticleForm(request.form)
+
+
+    return render_template("addarticle.html",form = form)
+
+
+
+#Makale Form 
+
+class ArticleForm(Form):
+    title = StringField("Makale Başlığı",validators=[validators.Length(min =5 , max = 5)])
+    content = TextAreaField("Makale İçeriği",validators=[validators.Length(min = 10)])
+
         
 # Tablodaki yerlerimizi belirliyoruz. 
 class Todo(db.Model):
