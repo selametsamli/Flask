@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from wtforms import Form,StringField,TextAreaField,PasswordField,validators
 from passlib.hash import sha256_crypt
 from functools import wraps
+import datetime
 
 
 
@@ -134,6 +135,13 @@ class Todo(db.Model):
     email = db.Column(db.String(80))
     password = db.Column(db.String(15))
 
+
+#makale için tablo oluşturuluyor
+class Makale(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    title = db.Column(db.String(150))
+    author = db.Column(db.String(20))
+    content = db.Column(db.String(500))
 
 if __name__ == "__main__":
     db.create_all() #uygulama çalışmadan hemen önce tüm classları tablo olarak ekliyoruz.
