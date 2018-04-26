@@ -137,9 +137,19 @@ def article(id):
     
     article=Makale.query.get(id)
     
-    
     return render_template("article.html",article=article)
 
+
+#Makale Silme
+@app.route("/delete/<string:id>")
+@login_required
+def delete(id):
+
+    article=Makale.query.get(id)
+    db.session.delete(article)
+    db.session.commit()
+
+    return redirect(url_for("dashboard"))
 
 
 #Makale Sayfası
